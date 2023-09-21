@@ -1,50 +1,72 @@
 import { ServiceType, ServiceYear } from ".";
 
 export const basePriceList: {
-  serviceType: ServiceType;
+  serviceTypes: ServiceType[];
   year?: ServiceYear;
   basePrice: number;
 }[] = [
   {
-    serviceType: "Photography",
+    serviceTypes: ["Photography", "VideoRecording"],
+    year: 2020,
+    basePrice: 2200,
+  },
+  {
+    serviceTypes: ["Photography", "VideoRecording"],
+    year: 2021,
+    basePrice: 2300,
+  },
+  {
+    serviceTypes: ["Photography", "VideoRecording"],
+    year: 2022,
+    basePrice: 2500,
+  },
+  {
+    serviceTypes: ["Photography"],
     year: 2020,
     basePrice: 1700,
   },
   {
-    serviceType: "Photography",
+    serviceTypes: ["Photography"],
     year: 2021,
     basePrice: 1800,
   },
   {
-    serviceType: "Photography",
+    serviceTypes: ["Photography"],
     year: 2022,
     basePrice: 1900,
   },
   {
-    serviceType: "VideoRecording",
+    serviceTypes: ["VideoRecording"],
     year: 2020,
     basePrice: 1700,
   },
   {
-    serviceType: "VideoRecording",
+    serviceTypes: ["VideoRecording"],
     year: 2021,
     basePrice: 1800,
   },
   {
-    serviceType: "VideoRecording",
+    serviceTypes: ["VideoRecording"],
     year: 2022,
     basePrice: 1900,
   },
+  
+];
+
+export const extraPriceList: {
+  serviceTypes: ServiceType[];
+  basePrice: number;
+}[] = [
   {
-    serviceType: "WeddingSession",
+    serviceTypes: ["WeddingSession"],
     basePrice: 600,
   },
   {
-    serviceType: "BlurayPackage",
+    serviceTypes: ["BlurayPackage"],
     basePrice: 300,
   },
   {
-    serviceType: "TwoDayEvent",
+    serviceTypes: ["TwoDayEvent"],
     basePrice: 400,
   },
 ];

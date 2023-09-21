@@ -1,4 +1,4 @@
-import { basePriceList } from "./basePriceList";
+import { basePriceList, extraPriceList } from "./basePriceList";
 import { discountRules } from "./discountRules";
 
 export type ServiceYear = 2020 | 2021 | 2022;
@@ -19,15 +19,24 @@ export const calculatePrice = (
   selectedYear: ServiceYear
 ) => {
   let basePrice = 0;
+
+  let foundEntry = basePriceList.find(
+    (bpl) =>
+      bpl.serviceTypes.every((st) => selectedServices.includes(st)) &&
+      bpl.year === selectedYear
+  );
+
+  if (foundEntry) {
+    basePrice += foundEntry.basePrice;
+  }
+
   selectedServices.forEach((service) => {
-    let foundEntry = basePriceList.find(
-      (bpl) =>
-        bpl.serviceType === service &&
-        (bpl.year === undefined || bpl.year === selectedYear)
+    let foundExtraPriceEntry = extraPriceList.find((epl) =>
+      epl.serviceTypes.includes(service)
     );
 
-    if (foundEntry) {
-      basePrice += foundEntry.basePrice;
+    if (foundExtraPriceEntry) {
+      basePrice += foundExtraPriceEntry.basePrice;
     }
   });
 
