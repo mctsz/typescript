@@ -28,10 +28,10 @@ export const discountRules: {
     services: ["VideoRecording", "WeddingSession"],
     discountValue: 300,
   },
-  {
-    services: ["Photography", "VideoRecording", "WeddingSession"],
-    discountValue: 300,
-  },
+//   {
+//     services: ["Photography", "VideoRecording", "WeddingSession"],
+//     discountValue: 300,
+//   },
   {
     services: ["Photography", "WeddingSession"],
     year: 2022,
