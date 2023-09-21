@@ -18,8 +18,21 @@ export const calculatePrice = (
   selectedServices: ServiceType[],
   selectedYear: ServiceYear
 ) => {
-  let basePrice = 0;
+  let basePrice = calculateBasePrice(selectedServices, selectedYear);
+  let finalPrice = calculateFinalPrice(
+    selectedServices,
+    selectedYear,
+    basePrice
+  );
 
+  return { basePrice, finalPrice };
+};
+
+const calculateBasePrice = (
+  selectedServices: ServiceType[],
+  selectedYear: ServiceYear
+) => {
+  let basePrice = 0;
   let foundEntry = basePriceList.find(
     (bpl) =>
       bpl.serviceTypes.every((st) => selectedServices.includes(st)) &&
@@ -40,6 +53,14 @@ export const calculatePrice = (
     }
   });
 
+  return basePrice;
+};
+
+const calculateFinalPrice = (
+  selectedServices: ServiceType[],
+  selectedYear: ServiceYear,
+  basePrice: number
+) => {
   let foundDiscountValues: number[] = [];
   discountRules.forEach((dr) => {
     let isApplyToServices =
@@ -55,7 +76,6 @@ export const calculatePrice = (
 
   let bestFoundDiscount = Math.max(...foundDiscountValues);
   bestFoundDiscount = bestFoundDiscount === -Infinity ? 0 : bestFoundDiscount;
-  let finalPrice = basePrice - bestFoundDiscount;
 
-  return { basePrice, finalPrice };
+  return basePrice - bestFoundDiscount;
 };
