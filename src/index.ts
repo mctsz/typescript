@@ -13,8 +13,6 @@ export const updateSelectedServices = (
   previouslySelectedServices: ServiceType[],
   action: { type: "Select" | "Deselect"; service: ServiceType }
 ) => {
-  let selectedServices: ServiceType[] = [];
-
   if (action.type === "Select") {
     let blurayConnectedEl =
       previouslySelectedServices.includes("VideoRecording") &&

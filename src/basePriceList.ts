@@ -2,7 +2,7 @@ import { ServiceType, ServiceYear } from ".";
 
 export const basePriceList: {
   serviceTypes: ServiceType[];
-  year?: ServiceYear;
+  year: ServiceYear;
   basePrice: number;
 }[] = [
   {
@@ -50,7 +50,6 @@ export const basePriceList: {
     year: 2022,
     basePrice: 1900,
   },
-  
 ];
 
 export const extraPriceList: {
