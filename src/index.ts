@@ -12,18 +12,66 @@ export type ServiceType =
 export const updateSelectedServices = (
   previouslySelectedServices: ServiceType[],
   action: { type: "Select" | "Deselect"; service: ServiceType }
-) => [];
+) => {
+  let selectedServices: ServiceType[] = [];
+
+  if (action.type === "Select") {
+    let blurayConnectedEl =
+      previouslySelectedServices.includes("VideoRecording") &&
+      action.service === "BlurayPackage";
+    let twodayevConnectedEl =
+      (previouslySelectedServices.includes("VideoRecording") ||
+        previouslySelectedServices.includes("Photography")) &&
+      action.service === "TwoDayEvent";
+
+    if (
+      previouslySelectedServices.length === 0 ||
+      blurayConnectedEl ||
+      twodayevConnectedEl
+    ) {
+      previouslySelectedServices.push(action.service);
+    }
+  }
+
+  if (action.type === "Deselect") {
+    previouslySelectedServices = previouslySelectedServices.filter(
+      (sels) => sels !== action.service
+    );
+
+    let blurayConnectedEl =
+      action.service === "VideoRecording" &&
+      previouslySelectedServices.includes("BlurayPackage");
+    if (blurayConnectedEl) {
+      previouslySelectedServices = previouslySelectedServices.filter(
+        (sels) => sels !== "BlurayPackage"
+      );
+    }
+    let twodayevConnectedEl =
+      (action.service === "VideoRecording" ||
+        action.service === "Photography") &&
+      previouslySelectedServices.includes("TwoDayEvent");
+
+    let isOtherMainServiceRemain =
+      previouslySelectedServices.includes("Photography") ||
+      previouslySelectedServices.includes("VideoRecording");
+
+    if (twodayevConnectedEl && !isOtherMainServiceRemain) {
+      previouslySelectedServices = previouslySelectedServices.filter(
+        (sels) => sels !== "TwoDayEvent"
+      );
+    }
+  }
+
+  return previouslySelectedServices;
+};
 
 export const calculatePrice = (
   selectedServices: ServiceType[],
   selectedYear: ServiceYear
 ) => {
   let basePrice = calculateBasePrice(selectedServices, selectedYear);
-  let finalPrice = calculateFinalPrice(
-    selectedServices,
-    selectedYear,
-    basePrice
-  );
+  let finalPrice =
+    basePrice - calculateDiscount(selectedServices, selectedYear);
 
   return { basePrice, finalPrice };
 };
@@ -56,10 +104,9 @@ const calculateBasePrice = (
   return basePrice;
 };
 
-const calculateFinalPrice = (
+const calculateDiscount = (
   selectedServices: ServiceType[],
-  selectedYear: ServiceYear,
-  basePrice: number
+  selectedYear: ServiceYear
 ) => {
   let foundDiscountValues: number[] = [];
   discountRules.forEach((dr) => {
@@ -77,5 +124,16 @@ const calculateFinalPrice = (
   let bestFoundDiscount = Math.max(...foundDiscountValues);
   bestFoundDiscount = bestFoundDiscount === -Infinity ? 0 : bestFoundDiscount;
 
-  return basePrice - bestFoundDiscount;
+  return bestFoundDiscount;
+};
+
+const shouldSelectElement = (sels: ServiceType, service: ServiceType) => {
+  let exactElement = sels === service;
+  let blurayConnectedEl =
+    service === "VideoRecording" && sels === "BlurayPackage";
+  let twodayevConnectedEl =
+    (service === "VideoRecording" || service === "Photography") &&
+    sels === "TwoDayEvent";
+
+  return exactElement || blurayConnectedEl || twodayevConnectedEl;
 };
