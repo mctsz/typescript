@@ -124,14 +124,3 @@ const calculateDiscount = (
 
   return bestFoundDiscount;
 };
-
-const shouldSelectElement = (sels: ServiceType, service: ServiceType) => {
-  let exactElement = sels === service;
-  let blurayConnectedEl =
-    service === "VideoRecording" && sels === "BlurayPackage";
-  let twodayevConnectedEl =
-    (service === "VideoRecording" || service === "Photography") &&
-    sels === "TwoDayEvent";
-
-  return exactElement || blurayConnectedEl || twodayevConnectedEl;
-};
